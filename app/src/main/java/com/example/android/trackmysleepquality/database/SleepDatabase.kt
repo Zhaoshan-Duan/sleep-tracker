@@ -15,3 +15,49 @@
  */
 
 package com.example.android.trackmysleepquality.database
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+
+// Database
+//  entities is all the tables version is set to 1,
+//  if schema is true and schema is changed, have to up the version number
+@Database(entities = [SleepNight::class], version = 1, exportSchema = false)
+abstract class SleepDatabase: RoomDatabase(){
+
+    // Associate DAO
+    abstract val sleepDatabaseDao: SleepDatabaseDao // one table
+
+    // allow access without instantiating the class
+    companion object {
+
+        // reference to the database
+        @Volatile // instance is never to be cached, all writes and read will be done to from the main meory
+        // changes made by one thread to INSTANCE are visible to all other threads
+        private var INSTANCE: SleepDatabase? = null
+
+        fun getInstance(context: Context): SleepDatabase{
+            synchronized(this){ // only one thread of execution at a time can enter this block
+                var instance = INSTANCE
+
+                if (instance == null){
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        SleepDatabase::class.java,
+                        "sleep_history_database"
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
+
+                    // assign to the newly created database
+                    INSTANCE = instance
+                }
+
+                return instance
+            }
+        }
+    }
+
+}
