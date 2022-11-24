@@ -26,6 +26,9 @@ import com.example.android.trackmysleepquality.database.SleepDatabaseDao
  */
 class SleepTrackerViewModel(
         val database: SleepDatabaseDao,
+        // AndroidViewModel is the same as ViewMoodel but takes the application context as a parmaeter
+        //      application context gives access to resources
         application: Application) : AndroidViewModel(application) {
+
 }
 
