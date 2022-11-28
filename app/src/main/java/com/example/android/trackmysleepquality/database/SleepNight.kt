@@ -20,23 +20,22 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// Sleep data entity
-@Entity (tableName = "daily_sleep_quality_table")
+// Data class representing Sleep data entity
+@Entity(tableName = "daily_sleep_quality_table")
 data class SleepNight(
 
-    // unique numeric primary key: make sure it guarantee unique
-    @PrimaryKey (autoGenerate = true)
+    // unique numeric primary key: Mandatory; make sure it guarantee unique
+    @PrimaryKey(autoGenerate = true)
     var nightId: Long = 0L,
 
     // Columns
-    @ColumnInfo(name="start_time_milli")
+    @ColumnInfo(name = "start_time_milli")
     val startTimeMilli: Long = System.currentTimeMillis(),
 
-    @ColumnInfo(name="end_time_milli")
+    // same as start time upon creation
+    @ColumnInfo(name = "end_time_milli")
     var endTimeMilli: Long = startTimeMilli,
 
-    @ColumnInfo(name="quality_rating")
+    @ColumnInfo(name = "quality_rating")
     var sleepQuality: Int = -1
-
-
-    )
+)
