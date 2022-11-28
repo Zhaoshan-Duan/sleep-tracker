@@ -19,7 +19,7 @@ package com.example.android.trackmysleepquality.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
-@Dao
+@Dao // annotate that the interface's role is to define how to access data in a Room database
 interface SleepDatabaseDao{
 
     // Insert a single SleepNight into the database
