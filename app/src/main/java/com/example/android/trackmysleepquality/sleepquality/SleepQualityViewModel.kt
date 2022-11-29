@@ -15,3 +15,47 @@
  */
 
 package com.example.android.trackmysleepquality.sleepquality
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.trackmysleepquality.database.SleepDatabaseDao
+import kotlinx.coroutines.*
+
+
+class SleepQualityViewModel(
+    private val sleepNightKey: Long = 0L, // Key from the navigation
+    val database: SleepDatabaseDao // database from the factory
+) : ViewModel() {
+
+    // Creating own scope is no longer recommended, use viewModelScope instead
+//
+//        private val viewModelJob = Job()
+//
+//        private val uiScope = CoroutineScope { Dispatchers.Main + viewModelJob }
+
+    // Navigation event
+    private val _navigateToSleepTracker = MutableLiveData<Boolean?>()
+
+    val navigateToSleepTracker: LiveData<Boolean?>
+        get() = _navigateToSleepTracker
+
+    fun doneNavigation() {
+        _navigateToSleepTracker.value = null
+    }
+
+    // Icon click handler
+    fun onSetSleepQuality(quality: Int) {
+        viewModelScope.launch {
+
+                val tonight = database.get(sleepNightKey) ?: return@launch
+
+                tonight.sleepQuality = quality
+
+                database.update(tonight)
+            // trigger navigation after setting sleep quality
+            _navigateToSleepTracker.value = true
+        }
+    }
+}
