@@ -67,6 +67,22 @@ class SleepTrackerFragment : Fragment() {
 
         binding.sleepTrackerViewModel = sleepTrackViewModel
 
+        // instantiate the recyclerview adapter
+        val adapter = SleepNightAdapter()
+
+        // connect the recycler view adapter
+        binding.sleepList.adapter = adapter
+
+        // Tell the Adapter that data should be adapting
+        // Using observer to make sure this observer is only around when the recyclerView is still on screen
+        sleepTrackViewModel.nights.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                // whenever we got a non-null value, assign it to the adapter's data
+                adapter.data = it
+            }
+        }
+        )
+
         binding.lifecycleOwner = this
 
         // observe the navigation event
