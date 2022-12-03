@@ -80,8 +80,7 @@ class SleepTrackerFragment : Fragment() {
                 // whenever we got a non-null value, assign it to the adapter's data
                 adapter.data = it
             }
-        }
-        )
+        })
 
         binding.lifecycleOwner = this
 
