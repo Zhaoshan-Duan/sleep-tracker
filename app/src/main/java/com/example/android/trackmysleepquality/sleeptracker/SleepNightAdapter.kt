@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.*
 import com.example.android.trackmysleepquality.database.SleepNight
@@ -36,6 +37,7 @@ class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
         return ViewHolder.from(parent)
     }
 
+    // Implementation detail of the RecyclerView
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // get reference of the views that this ViewHolder will hold
         val sleepLength: TextView = itemView.findViewById(R.id.sleep_length)
@@ -74,6 +76,5 @@ class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
             }
         }
     }
-
 
 }
