@@ -7,26 +7,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.*
 import com.example.android.trackmysleepquality.database.SleepNight
 
 // Goal: Take a list of sleep nights, adapt it into something that the RecyclerView can use to display on the screen
-class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
+class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
 
-    // Holds a list of sleep night
-    var data = listOf<SleepNight>()
-        set(value) {
-            field = value // set the value in a setter
-            notifyDataSetChanged() // let RecyclerView immediately redraw everything
-        }
 
-    override fun getItemCount() = data.size
 
     // How to draw an item
     // this method is only called for items that are either on screen, or just about to scroll onto the screen
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
+        val item = getItem(position)
         holder.bind(item)
     }
 
@@ -76,5 +70,19 @@ class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
             }
         }
     }
+}
 
+// Optimize changes to the data
+class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>() {
+    // Used to discover if an item was edit, removed, or moved
+    override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+        // it's important that you only check the IDS in this callback
+        //  if they do, they represent the same thing
+        return oldItem.nightId == newItem.nightId
+    }
+
+    // to determine if an item has changed
+    override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+        return oldItem == newItem
+    }
 }
