@@ -4,7 +4,7 @@ This is a app as part of the [Android App Development in Kotlin course on Udacit
 
 ## SleepQualityTracker
 
-The SleepQualityTracker app is a demo app that helps you collect information about your sleep. 
+The SleepQualityTracker app is a app that helps you collect information about your sleep. 
 * Start time
 * End time
 * Quality
@@ -14,6 +14,7 @@ This app demonstrates the following views and techniques:
 * Room database
 * DAO
 * Coroutines
+* RecyclerView
 
 It also uses and builds on the following techniques from previous lessons:
 * Transformation map
