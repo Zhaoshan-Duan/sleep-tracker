@@ -78,6 +78,7 @@ class SleepTrackerFragment : Fragment() {
 
         // instantiate the recyclerview adapter
         val adapter = SleepNightAdapter(SleepNightListener { nightId ->
+            // pass data to view model
             sleepTrackViewModel.onSleepNightClicked(nightId)
         })
 
