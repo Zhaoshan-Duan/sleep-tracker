@@ -19,8 +19,8 @@ fun TextView.setSleepDurationFormatted(item: SleepNight?) {
 }
 
 // Set the sleep quality based on the value in a SleepNight
-@BindingAdapter("sleepQuality")
-fun TextView.setSleepQuality(item: SleepNight?) {
+@BindingAdapter("sleepQualityString")
+fun TextView.setSleepQualityString(item: SleepNight?) {
     item?.let {
         text = convertNumericQualityToString(item.sleepQuality, context.resources)
     }
