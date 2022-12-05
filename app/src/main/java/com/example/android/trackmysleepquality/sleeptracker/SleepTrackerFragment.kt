@@ -17,9 +17,11 @@
 package com.example.android.trackmysleepquality.sleeptracker
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -51,8 +53,8 @@ class SleepTrackerFragment : Fragment() {
     ): View? {
 
         // Get a reference to the binding object and inflate the fragment views.
-        val binding: FragmentSleepTrackerBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_sleep_tracker, container, false)
+        val binding: FragmentSleepTrackerBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_sleep_tracker, container, false)
 
         // reference to the application that the fragment is attached to
         val application = requireNotNull(this.activity).application
@@ -74,12 +76,22 @@ class SleepTrackerFragment : Fragment() {
         // tell recyclerview to use grid layout manager
         binding.sleepList.layoutManager = manager
 
-
         // instantiate the recyclerview adapter
-        val adapter = SleepNightAdapter()
+        val adapter = SleepNightAdapter(SleepNightListener { nightId ->
+            sleepTrackViewModel.onSleepNightClicked(nightId)
+        })
 
         // connect the recycler view adapter
         binding.sleepList.adapter = adapter
+
+        sleepTrackViewModel.navigateToSleepDataQuality.observe(viewLifecycleOwner, Observer { night->
+            night?.let {
+                this.findNavController().navigate(
+                    SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(
+                        night))
+                sleepTrackViewModel.onSleepDataQualityNavigated()
+            }
+        })
 
         // Tell the Adapter that data should be adapting
         // Using observer to make sure this observer is only around when the recyclerView is still on screen
@@ -95,9 +107,9 @@ class SleepTrackerFragment : Fragment() {
         // observe the navigation event
         sleepTrackViewModel.navigateToSleepQuality.observe(viewLifecycleOwner, Observer { night ->
             night?.let {
-                this.findNavController().navigate(
-                    SleepTrackerFragmentDirections
-                        .actionSleepTrackerFragmentToSleepQualityFragment(night.nightId))
+                this.findNavController()
+                    .navigate(SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepQualityFragment(
+                        night.nightId))
                 sleepTrackViewModel.doneNavigating()
             }
         })
@@ -105,8 +117,7 @@ class SleepTrackerFragment : Fragment() {
         // Observe the snack bar
         sleepTrackViewModel.showSnackbarEvent.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
+                Snackbar.make(requireActivity().findViewById(android.R.id.content),
                     getString(R.string.cleared_message),
                     Snackbar.LENGTH_LONG // how long to display the message
                 ).show()
