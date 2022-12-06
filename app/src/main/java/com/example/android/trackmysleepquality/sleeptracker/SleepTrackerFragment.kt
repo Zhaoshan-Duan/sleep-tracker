@@ -72,6 +72,12 @@ class SleepTrackerFragment : Fragment() {
 
         // Add Gird Layout Manger
         val manager = GridLayoutManager(activity, 3)
+        manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup(){
+            override fun getSpanSize(position: Int) = when(position) {
+                0 -> 3
+                else -> 1
+            }
+        }
 
         // tell recyclerview to use grid layout manager
         binding.sleepList.layoutManager = manager
@@ -99,7 +105,7 @@ class SleepTrackerFragment : Fragment() {
         sleepTrackViewModel.nights.observe(viewLifecycleOwner, Observer {
             it?.let {
                 // whenever we got a non-null value, assign it to the adapter's data
-                adapter.submitList(it)
+                adapter.addHeaderAndSubmitList(it)
             }
         })
 
