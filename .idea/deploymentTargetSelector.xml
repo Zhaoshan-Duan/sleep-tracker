@@ -15,7 +15,7 @@
       </SelectionState>
       <SelectionState runConfigName="SleepDatabaseTest">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-07-24T00:58:52.108464400Z">
+        <DropdownSelection timestamp="2024-07-25T00:43:33.679650500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\duan9\.android\avd\Pixel_8_API_30.avd" />

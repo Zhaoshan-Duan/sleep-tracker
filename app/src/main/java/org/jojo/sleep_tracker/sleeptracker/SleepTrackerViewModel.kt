@@ -9,6 +9,7 @@ import org.jojo.sleep_tracker.database.SleepDatabaseDao
  * ViewModel for SleepTrackerFragment.
  */
 class SleepTrackerViewModel(
+    // access to the database
     val database: SleepDatabaseDao,
     application: Application) : AndroidViewModel(application) {
 }

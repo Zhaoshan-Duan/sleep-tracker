@@ -8,7 +8,9 @@
          the whole ViewModel, so that we can access the LiveData,
          click handlers, and state variables. -->
     <data>
-
+        <variable
+            name = "sleepTrackerViewModel"
+            type = "org.jojo.sleep_tracker.sleeptracker.SleepTrackerViewModel" />
     </data>
 
     <!-- Start of the visible fragment layout using ConstraintLayout -->
