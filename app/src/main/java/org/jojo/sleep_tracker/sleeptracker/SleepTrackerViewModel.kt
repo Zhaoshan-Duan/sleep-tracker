@@ -5,6 +5,7 @@ import android.provider.SyncStateContract.Helpers.insert
 import android.provider.SyncStateContract.Helpers.update
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jojo.sleep_tracker.database.SleepDatabaseDao
 import org.jojo.sleep_tracker.database.SleepNight
+import org.jojo.sleep_tracker.formatNights
 
 /**
  * ViewModel for SleepTrackerFragment.
@@ -27,6 +29,9 @@ class SleepTrackerViewModel(
     private var tonight = MutableLiveData<SleepNight?>()
 
     private val nights = database.getAllNights()
+    val nightString = nights.map { nights ->
+        formatNights(nights, application.resources)
+    }
 
     init {
         initializeTonight()
