@@ -15,4 +15,8 @@ class SleepTrackerViewModel(
         private var viewModelJob = Job()
 
 
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
 }
