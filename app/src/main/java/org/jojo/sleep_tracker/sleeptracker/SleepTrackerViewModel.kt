@@ -2,10 +2,14 @@ package org.jojo.sleep_tracker.sleeptracker
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jojo.sleep_tracker.database.SleepDatabaseDao
+import org.jojo.sleep_tracker.database.SleepNight
 
 /**
  * ViewModel for SleepTrackerFragment.
@@ -18,6 +22,9 @@ class SleepTrackerViewModel(
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    private var tonight = MutableLiveData<SleepNight?>()
+
+    private val nights = database.getAllNights()
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
