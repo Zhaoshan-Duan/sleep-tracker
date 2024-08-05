@@ -4,6 +4,7 @@ import android.app.Application
 import android.provider.SyncStateContract.Helpers.insert
 import android.provider.SyncStateContract.Helpers.update
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +34,14 @@ class SleepTrackerViewModel(
         formatNights(nights, application.resources)
     }
 
+    private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
+
+    val navigateToSleepQuality: LiveData<SleepNight>
+        get() = _navigateToSleepQuality
+
+    fun doneNavigating() {
+        _navigateToSleepQuality.value = null
+    }
     init {
         initializeTonight()
     }
@@ -71,6 +80,7 @@ class SleepTrackerViewModel(
             val oldNight = tonight.value ?: return@launch
             oldNight.endTimeMilli = System.currentTimeMillis()
             update(oldNight)
+            _navigateToSleepQuality.value = oldNight
         }
     }
     private suspend fun update(night: SleepNight) {
