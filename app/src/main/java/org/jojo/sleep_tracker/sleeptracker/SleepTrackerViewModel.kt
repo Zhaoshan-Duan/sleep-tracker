@@ -25,6 +25,17 @@ class SleepTrackerViewModel(
     private var tonight = MutableLiveData<SleepNight?>()
 
     private val nights = database.getAllNights()
+
+    init {
+        initializeTonight()
+    }
+
+    private fun initializeTonight() {
+       uiScope.launch{
+           tonight.value = getTonightFromDatabase()
+       }
+    }
+
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
