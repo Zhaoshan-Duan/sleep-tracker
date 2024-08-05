@@ -2,6 +2,7 @@ package org.jojo.sleep_tracker.sleeptracker
 
 import android.app.Application
 import android.provider.SyncStateContract.Helpers.insert
+import android.provider.SyncStateContract.Helpers.update
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -57,6 +58,19 @@ class SleepTrackerViewModel(
     private suspend fun insert(night: SleepNight) {
         withContext(Dispatchers.IO) {
             database.insert(night)
+        }
+    }
+
+    fun onStopTracking() {
+        uiScope.launch {
+            val oldNight = tonight.value ?: return@launch
+            oldNight.endTimeMilli = System.currentTimeMillis()
+            update(oldNight)
+        }
+    }
+    private suspend fun update(night: SleepNight) {
+        withContext(Dispatchers.IO) {
+            database.update(night)
         }
     }
 
