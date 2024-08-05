@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import org.jojo.sleep_tracker.R
 import org.jojo.sleep_tracker.database.SleepDatabase
 import org.jojo.sleep_tracker.databinding.FragmentSleepTrackerBinding
@@ -45,6 +46,17 @@ class SleepTrackerFragment : Fragment() {
             night?.let {
                 this.findNavController().navigate(
                     SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepQualityFragment(night.nightId))
+                sleepTrackerViewModel.doneNavigating()
+            }
+        }
+
+        sleepTrackerViewModel.showSnackBarEvent.observe(viewLifecycleOwner) {
+            if (it == true) {
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.cleared_message),
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 sleepTrackerViewModel.doneNavigating()
             }
         }
